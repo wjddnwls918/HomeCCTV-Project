@@ -1,7 +1,9 @@
 var express = require('express')
-
 var app = express();
 var bodyParser = require('body-parser');
+require('date-utils');
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 app.use(bodyParser.urlencoded({extended:true}))
 
@@ -9,37 +11,50 @@ var mysql = require('mysql');
 var connection = mysql.createConnection(
 		{
 host : 'localhost',
-user : '#',
-password :'#',
-database : '#'
+user : 'wangtou',
+password :'fkaus918',
+database : 'test'
 });
 
 connection.connect();
-
-/*
-var query = connection.query('select * from `user`',function(err,result)
-		{
-			console.log(result);
-			conncetion.end();
-			})
-*/
-
 var SerialPort = require('serialport');
 
-
-app.get('/',function(req,res)
+//server open
+server.listen(3000, () =>
 		{
-		
-		res.send("Hello, World")
-		})
-app.listen(8888,function()
+		console.log('Start the server using the port 3000');
+		});
+
+io.on('connection', function(client)
 		{
-		console.log("Server starting with 8888")
-		})
+		console.log("connect success");
+
+		client.on("connect",function(data)
+				{
+				console.log("connected : "+ data.connect);
+				}
+			 );
+
+		client.on("event",function(data)
+				{
+				console.log("data from client : "+data.key1+"," + data.key2);
+
+				var obj = {"hello":"client"};
+				console.log(obj);
+				client.emit("response",obj);
+
+				});
 
 
+		client.on("disconnect",function()
+				{
+				console.log("disconnected");
+				});
 
-//SerialPort.read(30);
+		});
+
+
+//port config
 var port = new SerialPort('/dev/ttyACM0',{
 	baudRate: 115200
 });
@@ -57,30 +72,7 @@ port.on('error', function(err)
 	{
 	console.log('Error: ', err.message);
 	});
-/*
-port.on('data',function(data)
-	{
-	//console.log(data.temp +", "+data.humi+", "+data.button);\
-	console.log(data.length);
-	if(data.length >= 21 )
-	{
-		console.log('Read Data: '+data);
-		
-		var insert = connection.query('insert into sensordata set ?'
-				,sensordata,function(error,results,fields)
-				{
-				if(error) throw error;
-				console.log(results.insertId);
-				
-			//	connection.end();
-				
-				});
 
-	}
-
-	}
-);
-*/
 
 //read data from Arduino
 const Readline = SerialPort.parsers.Readline;
@@ -94,10 +86,31 @@ function test(data)
 	console.log(typeof(data));
 
 	var sensordata = String(data).split(',');
-
+	/*
 	for( var i =0; i<sensordata.length; i++)
 	{
 		console.log(sensordata[i]);
 	
-	}
+	}*/
+	var newDate = new Date();
+	var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
+
+	var temp = {temperature:sensordata[0] ,
+		    humidity : sensordata[1],
+		    ppm : sensordata[2] ,
+		    flameState : sensordata[3],
+		    humState : sensordata[4],
+		    inputtime : time
+			   };
+
+
+	var insert = connection.query('insert into sensordata set ?',temp,function(error,results,fields)
+			{
+			if(error) throw error;
+				console.log(results.insertId);
+			
+			//connection.end();
+
+			});
+	console.log("insert completed!");
 }
