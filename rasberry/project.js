@@ -4,6 +4,9 @@ var bodyParser = require('body-parser');
 require('date-utils');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var Gpio = require('onoff').Gpio,
+	left = new Gpio(17,'out'),
+	right = new Gpio(18,'out');
 
 app.use(bodyParser.urlencoded({extended:true}))
 
@@ -23,6 +26,7 @@ var SerialPort = require('serialport');
 server.listen(3000, () =>
 		{
 		console.log('Start the server using the port 3000');
+
 		});
 
 io.on('connection', function(client)
@@ -35,13 +39,11 @@ io.on('connection', function(client)
 				}
 			 );
 
-		client.on("event",function(data)
+		client.on("control",function(data)
 				{
-				console.log("data from client : "+data.key1+"," + data.key2);
+				console.log("data from client : "+data.command);
 
-				var obj = {"hello":"client"};
-				console.log(obj);
-				client.emit("response",obj);
+				//client.emit("response",obj);
 
 				});
 
@@ -82,8 +84,7 @@ parser.on('data', test);
 function test(data)
 {
 	console.log(data);
-	console.log("success ??");
-	console.log(typeof(data));
+
 
 	var sensordata = String(data).split(',');
 	/*
@@ -103,14 +104,23 @@ function test(data)
 		    inputtime : time
 			   };
 
+	// data input 
 
+	/*		
 	var insert = connection.query('insert into sensordata set ?',temp,function(error,results,fields)
 			{
-			if(error) throw error;
-				console.log(results.insertId);
-			
+				if(error) 
+				{
+					console.log(error.code);
+					console.log(error.fatal);
+				}
+				console.log("insert completed!, row num :" +					results.insertId);
+				
+				
 			//connection.end();
-
+			
 			});
-	console.log("insert completed!");
+	*/
+
+	
 }
