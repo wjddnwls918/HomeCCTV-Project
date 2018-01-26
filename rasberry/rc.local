@@ -1,0 +1,22 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+v4l2-ctl --set-ctrl horizontal_flip=1
+v4l2-ctl --set-ctrl vertical_flip=1
+sudo -u pi /home/pi/h264_v4l2_rtspserver/h264_v4l2_rtspserver -F 25 -W 1280 -H 720 -P 8555 /dev/video0
+exit 0
