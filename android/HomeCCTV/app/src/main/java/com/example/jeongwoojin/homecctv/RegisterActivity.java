@@ -32,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         id = (EditText)findViewById(R.id.id);
         pw = (EditText)findViewById(R.id.pw);
 
+
         button = (Button)findViewById(R.id.Register);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +105,13 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         Toast.makeText(getApplicationContext(),"하이룽",Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Toast.makeText(getApplicationContext(),"RegisterActivity Pause 호출",Toast.LENGTH_LONG).show();
 
     }
 }

@@ -9,9 +9,14 @@
         app:showAsAction="never"
         />
 
+    <item android:id="@+id/infoupdate"
+        android:title="내 정보 변경"
+        app1:showAsAction="never"
+        />
+
 
     <item android:id="@+id/edit"
-        android:title="설정"
+        android:title="외출모드"
         android:icon="@drawable/edit"
         app1:showAsAction="never"
         />

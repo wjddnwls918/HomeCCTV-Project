@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                                 editor.commit();
 
 
-                                Intent intent = new Intent(MainActivity.this,AfterLogin.class);
+                                Intent intent = new Intent(MainActivity.this,MenuActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.putExtra("userID",userID);
                                 intent.putExtra("userPW",userPW);
@@ -144,4 +145,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Toast.makeText(getApplicationContext(),"MainActivity Pause 호출",Toast.LENGTH_LONG).show();
+
+    }
+
 }

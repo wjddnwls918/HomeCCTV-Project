@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,13 +21,35 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".AfterLogin"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".MenuActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
         <service
-            android:name=".TcpService"
+            android:name=".BackgroundService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".AfterLogin"></activity>
+        <activity android:name=".DataCheck"></activity>
+
+
     </application>
 
 </manifest>
