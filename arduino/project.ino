@@ -2,8 +2,9 @@
 #include <DHT.h>
 #include <WiFi.h>
 #include "MQ135.h"
+#include <Servo.h>
 #include <ArduinoJson.h>
-#define DHTPIN 3
+#define DHTPIN 6
 #define DHTTYPE DHT22
 #define BUZZER 10
 #define RLOAD 10.0
@@ -19,6 +20,7 @@ MQ135 gasSensor = MQ135(ANALOGPIN);
 
 const int beepFrequency = 900;
 const int beepDuration = 500;
+Servo servo;
 
 int flag = 0;
 int sw=2;
@@ -26,6 +28,7 @@ int flame = 4;
 int state = 0;
 int led = 7;
 int humSensor = 5;
+int angle = 0;
 
 DHT dht(DHTPIN,DHTTYPE);
 int tones[] = {261,294,330,349,392,440,494,523};
@@ -41,6 +44,11 @@ void setup()
   pinMode(flame, INPUT);
   pinMode(led , OUTPUT);
   pinMode(humSensor, INPUT);
+  attachInterrupt(0,left,RISING);
+  attachInterrupt(1,right,RISING);
+  servo.attach(8);
+  angle = 90;
+  servo.write(angle);
   //float rzero = gasSensor.getRZero();
   //delay(3000);
   //Serial.print("MQ135 RZERO Calibration Value : ");
@@ -138,6 +146,28 @@ void buzzerAct(int buttonState)
   {
     tone(BUZZER, beepFrequency, beepDuration);
   }
+}
+
+
+void left()
+{
+ //Serial.print("left!!"); 
+  
+  angle -=10;
+  if(angle <0)
+  angle = 0;
+  servo.write(angle);
+}
+
+void right()
+{
+  //Serial.print("right!!");
+  
+  angle +=10;
+  if(angle >180)
+  angle =180;
+  servo.write(angle);
+  
 }
   
   
