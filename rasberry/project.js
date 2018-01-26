@@ -25,32 +25,44 @@ var SerialPort = require('serialport');
 //server open
 server.listen(3000, () =>
 		{
-		console.log('Start the server using the port 3000');
+//		console.log('Start the server using the port 3000');
 
 		});
 
 io.on('connection', function(client)
 		{
-		console.log("connect success");
-
+		//console.log("connect success");
+		
 		client.on("connect",function(data)
 				{
-				console.log("connected : "+ data.connect);
+//				console.log("connected : "+ data.connect);
 				}
 			 );
 
 		client.on("control",function(data)
 				{
-				console.log("data from client : "+data.command);
 
-				//client.emit("response",obj);
+				//OK
+				//console.log("data from client : "+data.command);
+				if(data.command == "left")
+				{
+					left.writeSync(1);
+					left.writeSync(0);
+				}
+				else if( data.command == "right")
+				{
+					right.writeSync(1);
+					right.writeSync(0);
+
+				}
+		//		client.emit("response",{"hello":"hi"});
 
 				});
 
 
 		client.on("disconnect",function()
 				{
-				console.log("disconnected");
+//				console.log("disconnected");
 				});
 
 		});
@@ -66,13 +78,13 @@ var port = new SerialPort('/dev/ttyACM0',{
 
 port.on('open',function()
 	{
-	console.log('serial port OPEN');
+//	console.log('serial port OPEN');
 
 	});
 
 port.on('error', function(err)
 	{
-	console.log('Error: ', err.message);
+//	console.log('Error: ', err.message);
 	});
 
 
@@ -81,9 +93,11 @@ const Readline = SerialPort.parsers.Readline;
 const parser = port.pipe(new Readline({ delimiter: '\n'  }));
 parser.on('data', test);
 
+var temp;
+
 function test(data)
 {
-	console.log(data);
+//	console.log(data);
 
 
 	var sensordata = String(data).split(',');
@@ -96,7 +110,7 @@ function test(data)
 	var newDate = new Date();
 	var time = newDate.toFormat('YYYY-MM-DD HH24:MI:SS');
 
-	var temp = {temperature:sensordata[0] ,
+	temp = {temperature:sensordata[0] ,
 		    humidity : sensordata[1],
 		    ppm : sensordata[2] ,
 		    flameState : sensordata[3],
@@ -106,7 +120,7 @@ function test(data)
 
 	// data input 
 
-	/*		
+/*			
 	var insert = connection.query('insert into sensordata set ?',temp,function(error,results,fields)
 			{
 				if(error) 
@@ -114,13 +128,13 @@ function test(data)
 					console.log(error.code);
 					console.log(error.fatal);
 				}
-				console.log("insert completed!, row num :" +					results.insertId);
+				//console.log("insert completed!, row num :" +					results.insertId);
 				
 				
 			//connection.end();
 			
 			});
-	*/
-
+	
+*/
 	
 }
