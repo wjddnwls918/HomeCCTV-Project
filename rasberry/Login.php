@@ -1,6 +1,6 @@
 <?php
 
-	$con = mysqli_connect("localhost","wangtou","fkaus918","test");
+	$con = mysqli_connect("#","#","#","#");
 
 	$userID = $_POST["userID"];
 	const PASSWORD_COST = ['cost' =>12];
