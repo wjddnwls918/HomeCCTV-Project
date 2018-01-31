@@ -1,6 +1,6 @@
 <?php
 
-$con = mysqli_connect("192.168.219.136","wangtou","fkaus918","test");
+$con = mysqli_connect("#","#","#","test");
 
 $select = " select * from sensordata order by idx desc";
 $result = mysqli_query($con, $select);
