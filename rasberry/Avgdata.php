@@ -1,6 +1,6 @@
 <?php
 
-$con = mysqli_connect("localhost","wangtou","fkaus918","test");
+$con = mysqli_connect("#","#","#","test");
 
 $day = $_POST["day"];
 #$day = '2018-01-31';
