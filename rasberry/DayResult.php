@@ -1,6 +1,6 @@
 <?php
 
-$con = mysqli_connect("192.168.219.136","wangtou","fkaus918","test");
+$con = mysqli_connect("#","#","#","test");
 
 
 
