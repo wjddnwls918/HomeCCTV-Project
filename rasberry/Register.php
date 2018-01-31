@@ -1,6 +1,6 @@
 <?php
 
-$con = mysqli_connect("localhost","wangtou","fkaus918","test");
+$con = mysqli_connect("localhost","#","#","test");
 
 $userID = $_POST["userID"];
 $userPW = $_POST["userPW"];
