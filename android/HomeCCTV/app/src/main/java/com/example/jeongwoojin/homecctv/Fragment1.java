@@ -1,9 +1,17 @@
 package com.example.jeongwoojin.homecctv;
 
+
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
+
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +19,11 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,13 +34,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.otto.Subscribe;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+import static android.text.InputType.TYPE_CLASS_DATETIME;
+import static android.text.InputType.TYPE_CLASS_NUMBER;
+import static android.text.InputType.TYPE_CLASS_TEXT;
 
 /**
  * Created by JEONGWOOJIN on 2018-01-26.
@@ -41,35 +60,42 @@ public class Fragment1 extends Fragment implements AbsListView.OnScrollListener 
     private List<String> list;                      // String 데이터를 담고있는 리스트
     private List<String> list2;
     private ListViewAdapter adapter;                // 리스트뷰의 아답터
-    private int page = 0;                           // 페이징변수. 초기 값은 0 이다.
-    private final int OFFSET = 20;                  // 한 페이지마다 로드할 데이터 갯수.
+    private int page;                           // 페이징변수. 초기 값은 0 이다.
+    private int OFFSET;                // 한 페이지마다 로드할 데이터 갯수.
     private ProgressBar progressBar;                // 데이터 로딩중을 표시할 프로그레스바
     private boolean mLockListView = false;          // 데이터 불러올때 중복안되게 하기위한 변수
 
-    JSONObject json = null;
     JSONArray jsonArray;
-
     int list_cnt = 0 ;
-    String getIdx[];
-    String getTemperature[];
-    String getHumidity[];
-    String getflameState[];
-    String gethumStata[];
     String getinputtime[];
-
     Spinner spinner;
+
+
+    EditText searchtext;
+    Button search;
+    String transdata;
+    int curPnt;
 
     public Fragment1()
     {
 
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        BusProvider.getInstance().register(this);
+
+
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment1,container,false);
+        final ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment1,container,false);
 
 
         listView = (ListView) viewGroup.findViewById(R.id.listview);
@@ -80,30 +106,80 @@ public class Fragment1 extends Fragment implements AbsListView.OnScrollListener 
         listView.setAdapter(adapter);
         progressBar.setVisibility(View.GONE);
         listView.setOnScrollListener(this);
+
+        page = 0;
+        OFFSET = 20;
         getItem();
+
+        searchtext = (EditText)viewGroup.findViewById(R.id.searchtext);
+        search = (Button)viewGroup.findViewById(R.id.search);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String data = list.get(i);
+
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                //fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container,DayGraph.newInstance(data));
+
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+               /* Intent intent = new Intent(getContext(),DayCheck.class);
+                intent.putExtra("data",data);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);*/
+
+            }
+        });
+
 
         spinner = (Spinner) viewGroup.findViewById(R.id.spinner);
         //input array data
-        ArrayList<String> check = new ArrayList<>();
-        check.add("1");
-        check.add("2");
-        check.add("4");
-        check.add("5");
 
         String[] dropdown = new String[2];
-        dropdown[0] = "날짜";
-        dropdown[1] = "??";
+        dropdown[0] = "번호";
+        dropdown[1] = "날짜";
 
         //using ArrayAdapter
         ArrayAdapter spinnerAdapter;
         spinnerAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, dropdown);
+
         spinner.setAdapter(spinnerAdapter);
+
+
 
         //event listener
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"선택된 아이템 : "+spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+
+                //Log.d("position check",Integer.toString(position));
+                if(spinner.getItemIdAtPosition(position)==0)
+                {
+                    curPnt=0;
+
+                    searchtext.setText("");
+                    searchtext.setInputType(TYPE_CLASS_NUMBER);
+                    searchtext.setHint("input index number");
+                }
+                else
+                {
+                    curPnt=1;
+
+                    searchtext.setText("");
+                    searchtext.setInputType(TYPE_CLASS_DATETIME);
+                    searchtext.setHint("input date");
+
+                    FragmentManager fm = getFragmentManager();
+                    DateDialog dialog = new DateDialog();
+                    dialog.show(fm,"select date");
+
+                }
             }
 
             @Override
@@ -112,9 +188,70 @@ public class Fragment1 extends Fragment implements AbsListView.OnScrollListener 
             }
         });
 
+
+
+        //자료 검색
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if(curPnt == 0) {
+
+                    if(Integer.parseInt(searchtext.getText().toString()) > list_cnt || Integer.parseInt(searchtext.getText().toString()) <= 0)
+                        transdata="0";
+                    else
+                        transdata = list.get(Integer.parseInt(searchtext.getText().toString()) - 1);
+
+
+                }
+                   else if(curPnt == 1)
+                    transdata = searchtext.getText().toString();
+
+                if( !list.contains(transdata) )
+                    Toast.makeText(getContext(),"자료를 찾을 수 없습니다.",Toast.LENGTH_LONG).show();
+                else {
+
+
+
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    //fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, DayGraph.newInstance(transdata));
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+
+
+                }
+            }
+        });
+
         return viewGroup;
 
     }
+
+    @Subscribe
+    public void result(String date)
+    {
+        searchtext.setText(date);
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        BusProvider.getInstance().unregister(this);
+
+        super.onDestroy();
+    }
+
+
 
     @Override
     public void onScrollStateChanged(AbsListView absListView, int i) {
@@ -142,56 +279,39 @@ public class Fragment1 extends Fragment implements AbsListView.OnScrollListener 
         mLockListView = true;
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://192.168.219.136/DayCheck.php";
+        String url = "http://192.168.219.136/DayResult.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 //요청 성공시
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("result", "[" + response + "]");
                         Bundle bundle = new Bundle();
-                        //버스로 넘김
-                        //BusProvider.getInstance().post(response);
                         try {
                             jsonArray = new JSONArray(response);
                             list_cnt = jsonArray.length();
 
-                            getIdx = new String[list_cnt];
-                            getTemperature = new String[list_cnt];
-                            getHumidity = new String[list_cnt];
-                            getflameState = new String[list_cnt];
-                            gethumStata = new String[list_cnt];
                             getinputtime = new String[list_cnt];
 
                             for (int i = 0; i < list_cnt; i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                //getIdx[i] = jsonObject.getString("idx");
                                 getinputtime[i] = jsonObject.getString("inputtime");
-                                Log.d("getIdx, getinputtime ",getinputtime[i]);
+
                             }
                         }catch(JSONException e)
                         {
                             e.printStackTrace();
                         }
 
-                        Log.d("jsonArray",""+jsonArray);
-
                         for(int i = 0; i <20; i++)
                         {
-                            Log.d("list_cnt" , Integer.toString(list_cnt));
-                            if( i >= list_cnt)
+                            if(i > list_cnt-1){
                                 break;
+                            }
 
-                            // Log.d("success",getinputtime[i]);
-                            //
-                            // String label = "Label " + ((page * OFFSET) + i);
-                            //list.add(label);
                             list.add(getinputtime[(page * OFFSET) + i]);
                             list2.add( Integer.toString(( page*OFFSET ) + i+1) );
                         }
-
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -218,4 +338,13 @@ public class Fragment1 extends Fragment implements AbsListView.OnScrollListener 
 
     }
 
+    public static Fragment1 newInstance(String param1) {
+        Fragment1 fragment = new Fragment1();
+        Bundle args = new Bundle();
+        args.putString("day", param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 }
+

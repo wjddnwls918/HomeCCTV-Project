@@ -3,6 +3,8 @@ package com.example.jeongwoojin.homecctv;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class RegisterRequest extends StringRequest {
         parameters = new HashMap<>();
 
         parameters.put("userID",userID);
-        parameters.put("userPW",userPW);
+        parameters.put("userPW",encryptSHA512(userPW));
 
     }
 
@@ -31,4 +33,29 @@ public class RegisterRequest extends StringRequest {
         return parameters;
     }
 
+    public String encryptSHA512(String target)
+    {
+        try
+        {
+            MessageDigest sh = MessageDigest.getInstance("SHA-512");
+            sh.update(target.getBytes());
+
+            StringBuffer sb = new StringBuffer();
+
+            for(byte b : sh.digest())
+                sb.append(Integer.toHexString(0xff & b));
+
+            return sb.toString();
+
+
+        }catch (NoSuchAlgorithmException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
 }
+

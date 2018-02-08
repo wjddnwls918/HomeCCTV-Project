@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         .create()
                                         .show();
 
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                             }
@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         .create()
                                         .show();
 
-                                /*Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
+                                /*Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
                                 startActivity(intent);*/
                             }
 
@@ -97,14 +97,13 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //finish();
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
 
 
-        Toast.makeText(getApplicationContext(),"하이룽",Toast.LENGTH_LONG).show();
 
     }
 
