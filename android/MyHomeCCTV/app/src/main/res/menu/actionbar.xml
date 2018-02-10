@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://shemas.android.com/apk/res-auto"
+    xmlns:app1="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/logout"
+        android:title="로그아웃"
+        app:showAsAction="never"
+        />
+
+    <item android:id="@+id/infoupdate"
+        android:title="내 정보 변경"
+        app1:showAsAction="never"
+        />
+
+
+    <item
+        android:id="@+id/goout"
+        android:title="외출모드"
+        app1:showAsAction="never" />
+
+    <item
+        android:id="@+id/gooutoff"
+        android:title="외출모드 끄기"
+        app1:showAsAction="never" />
+
+</menu>
