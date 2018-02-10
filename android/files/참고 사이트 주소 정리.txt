@@ -1,0 +1,207 @@
+https://blog.naver.com/wlsdml1103/221160152394
+
+
+http://www.fun25.co.kr/blog/android-asynctask-httpurlconnection-post
+
+
+http://couplewith.tistory.com/entry/MYSQL-%EA%B3%84%EC%A0%95-%EC%83%9D%EC%84%B1-%EA%B6%8C%ED%95%9C%EB%B6%80%EC%97%AC-%EA%B6%8C%ED%95%9C-%EC%82%AD%EC%A0%9C - mysql 설명
+
+https://blog.naver.com/roboholic84/220421863761 - 아두이노 인터럽트
+
+
+http://kkokkal.tistory.com/1295  //외장하드 마운트
+
+
+https://www.npmjs.com/package/serialport
+
+
+http://webnautes.tistory.com/829
+
+
+
+https://blog.naver.com/centralvdent/221124025345 nginx/php/mysql
+
+
+
+http://blog.work6.kr/397 php 
+
+
+
+http://booolean.tistory.com/333  좋은듯 ??
+
+
+
+https://askubuntu.com/questions/164627/nginx-php-fpm-access-denied-error
+
+
+/*이거 중요
+
+fastcgi_param   PATH_TRANSLATED     $document_root$fastcgi_path_info;
+If I commented this line, everything worked fine. However I saw this in almost every post
+ I read about Nginx configs, so it bothered me. When looking at my configs for the millionth time, 
+I saw that  cgi.fix_pathinfo (in php.ini) was set to 0, where it should have been 1. 
+
+The default value PHP uses is also 1
+
+//php파일에서 설정안돼서 nginx서버에서 인식을 못했음 (php.ini)
+
+, so I must have changed this in my debugging hours, because I remember reading about this value, and thought it was set correct.
+
+Anyway, maybe it helps anyone Googling for this issue.
+
+/*
+
+
+
+https://zunonia.wordpress.com/2014/02/27/ubuntu%EC%97%90%EC%84%9C-%EC%96%B8%EC%96%B4%EC%85%8B%EC%9D%B4-%EA%B4%80%EB%A0%A8-%EC%97%90%EB%9F%AC-%EC%B2%98%EB%A6%AC%EB%B2%95/
+
+
+
+
+http://jinbroing.tistory.com/186?category=699687
+
+
+
+https://cosmosjs.blog.me/220789812263 //카메라 스트리밍
+
+
+https://blog.naver.com/chgy2131/220228950408 // rc.local에 대한 설명 + 런레벨 이해 필요 
+
+
+
+
+https://blog.naver.com/makga87/221145632154  // mysql UTF8 설정
+
+
+
+https://m.blog.naver.com/PostView.nhn?blogId=nkkh159&logNo=220860733367&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F // phpmyadmin 설정 
+심볼릭 링크 sudo ln -s 소스경로 목적지경로
+
+
+
+https://code.i-harness.com/ko/q/1ca6f83 
+
+nodejs 경로를 몰랐는데 알게됨 그래서 심볼릭 링크를 sudo ln -s /opt/nodejs/bin/forever /usr/bin/forever 로 검 
+
+
+
+
+http://fishpoint.tistory.com/2370 rc.local말고 새로운방법 (이걸로 해결)
+
+
+
+http://blog.naver.com/PostView.nhn?blogId=sangrime&logNo=220678111527&categoryNo=0&parentCategoryNo=10&viewDate=&currentPage=1&postListTopCurrentPage=1&from=postView
+
+https://developer.android.com/guide/topics/media/media-formats.html?hl=ko 구글 개발자사이트 ( 비디오 해상도 정보 얻었음)
+
+
+
+
+ 
+https://jhye90.blog.me/220757881153 쓰레드와 핸들러
+
+http://altongmon.tistory.com/532 volley 정리
+
+
+http://sharp57dev.tistory.com/9 리스트뷰, 페이징
+
+
+
+https://blog.naver.com/chanhyuck1021/221074803365 // php json
+
+http://yonoo88.tistory.com/1011 // json 배열 디코딩
+
+
+SELECT DISTINCT(date_format(inputtime,'%Y-%m-%d')) FROM `sensordata` where date_format(inputtime,'%Y-%m-%d') BETWEEN '2018-01-01' and '2018-12-29'
+
+
+SELECT * FROM `sensordata` WHERE date_format(inputtime,"%Y-%m-%d")="2018-01-27"
+
+
+http://mailmail.tistory.com/7 버튼을활용한 탭버튼 , 프레그먼트 활용 굳 .
+
+
+
+http://gun0912.tistory.com/4           ////   otto 라이브러리
+
+
+https://medium.com/@henen/%EB%B9%A0%EB%A5%B4%EA%B2%8C%EB%B0%B0%EC%9A%B0%EB%8A%94-%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-fragment-4-fragment%EA%B0%84-%EC%97%90-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%A0%84%EB%8B%AC-c6ab1d0766af
+
+
+https://blog.naver.com/diceworld/220292127761  /// php mysql 쿼리
+
+
+http://dpdpwl.tistory.com/37 /// 그래프 그리는거 
+
+
+https://github.com/PhilJay/MPAndroidChart/wiki/The-AxisValueFormatter-interface //AxisValueFormatter interface 그래프 x축 속성 (월별, 등등)
+
+
+
+SELECT avg(temperature) from sensordata where date_format(inputtime, "%Y-%m-%d")="2018-01-30" 일별 데이터 평균
+
+SELECT avg(temperature),avg(humidity),avg(ppm) from sensordata where date_format(inputtime, "%Y-%m-%d %H")="2018-01-30 16" 시간별 
+
+SELECT MIN(temperature) from sensordata where date_format(inputtime, '%Y-%m-%d')='2018-01-31' 최소 
+
+SELECT MIN(temperature) from sensordata where date_format(inputtime, '%Y-%m-%d')='2018-01-31' 최대 
+
+
+http://hashcode.co.kr/questions/465/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EB%B7%B0%EC%97%90%EC%84%9C-%EC%9C%84%EB%9E%91-%EC%95%84%EB%9E%98%EC%97%90-%ED%85%8C%EB%91%90%EB%A6%AC-%EC%B6%94%EA%B0%80%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%B4-%EB%AD%94%EA%B0%80%EC%9A%94
+//테이블 레이아웃 경계선 추가
+
+
+https://blog.naver.com/aneminw/220720550865     php substr()함수 
+
+
+
+http://hashcode.co.kr/questions/125/fragment%EC%97%90%EC%84%9C-findviewbyid%ED%95%98%EB%8A%94%EB%B2%95  /// fragment에서 findviewbyid하는법  getView()
+
+
+
+http://makerj.tistory.com/97
+https://bonoogi.postype.com/post/654 다이얼로그로 팝업창 띄우기
+
+
+
+http://www.masterqna.com/android/77279/node-fcm-push-%EC%97%90%EC%84%9C-fcm-%ED%91%B8%EC%8B%9C-%EC%A7%88%EB%AC%B8 //fcm client token 얻어오는법
+
+
+http://www.itpaper.co.kr/node-js%EB%A1%9C-fcm-%EB%B0%9C%EC%86%A1-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0 //node.js fcm 메세지 푸시하는법 
+http://codersdict.com/20  ////
+
+
+
+c-EhHKZ3eq0:APA91bGBOkB62jj2FJi2zjB5bdvn5Efs_fOGrU2UGpngLktmffwcCTHDaGvmZ8bfsjwANvwSeOqSFGMmHoQLtFpv42AvO_3QynDBn3ieVzB6NTfVamlV3GPBkaRb3xB7GNBgkqQXX6Lz
+c-EhHKZ3eq0:APA91bGBOkB62jj2FJi2zjB5bdvn5Efs_fOGrU2UGpngLktmffwcCTHDaGvmZ8bfsjwANvwSeOqSFGMmHoQLtFpv42AvO_3QynDBn3ieVzB6NTfVamlV3GPBkaRb3xB7GNBgkqQXX6Lz
+
+
+
+
+https://m.blog.naver.com/PostView.nhn?blogId=scw0531&logNo=220889039794&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F  // 안드로이드 암호화 
+
+
+
+http://recipes4dev.tistory.com/125 //asset폴더 정리
+
+
+
+http://jhdream.tistory.com/18 node.js mysql RowDataPacket
+
+
+
+http://tedrepository.tistory.com/6 //프레그먼트 백스택 
+
+
+
+
+http://blog.naver.com/PostView.nhn?blogId=suda552&logNo=220813122485 /// 비밀번호 정규표현식 
+
+
+
+http://knowanswer.tistory.com/10 // 라즈베리파이 iptable
+
+
+
+http://kwon8999.tistory.com/entry/%EB%B0%B0%ED%8F%AC?category=881640 // 플레이스토어 앱배포
+http://cppcomeon.tistory.com/851
