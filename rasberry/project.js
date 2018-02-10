@@ -7,6 +7,14 @@ var io = require('socket.io')(server);
 var Gpio = require('onoff').Gpio,
 	left = new Gpio(17,'out'),
 	right = new Gpio(18,'out');
+var FCM = require('fcm-node');
+var serverKey = 'AAAAaOt1N-E:APA91bFV9x7DXgdjY5eqlMR29Jxjm0h8fQ0MQPDhsSAwjxKzVYOs8Yjk7D2iyBCFlrD_G5Z-eeS-rxYtF3oKIX5kxl4TR2x6mGOVqa_Hm_77Rp3PGNgvlOfnWeEOIu9oTpWvSTki1wPa';
+//var client_token ='c-EhHKZ3eq0:APA91bGBOkB62jj2FJi2zjB5bdvn5Efs_fOGrU2UGpngLktmffwcCTHDaGvmZ8bfsjwANvwSeOqSFGMmHoQLtFpv42AvO_3QynDBn3ieVzB6NTfVamlV3GPBkaRb3xB7GNBgkqQXX6Lz';
+
+
+var fcm = new FCM(serverKey);
+
+
 
 app.use(bodyParser.urlencoded({extended:true}))
 
@@ -22,10 +30,12 @@ database : 'test'
 connection.connect();
 var SerialPort = require('serialport');
 
+
 //server open
 server.listen(3000, () =>
 		{
 //		console.log('Start the server using the port 3000');
+	
 
 		});
 
@@ -58,6 +68,7 @@ io.on('connection', function(client)
 		//		client.emit("response",{"hello":"hi"});
 
 				});
+
 
 
 		client.on("disconnect",function()
@@ -94,11 +105,19 @@ const parser = port.pipe(new Readline({ delimiter: '\n'  }));
 parser.on('data', test);
 
 var temp;
+var selectresult = "";
 
 function test(data)
 {
 //	console.log(data);
 
+	var select = connection.query('select * from fcm',function(error,results){
+			if(error)
+			console.log(error);
+
+			//console.log(results);
+			selectresult = results;
+			});
 
 	var sensordata = String(data).split(',');
 	/*
@@ -120,7 +139,84 @@ function test(data)
 
 	// data input 
 
-/*			
+	if(sensordata[3] == 0)
+	{
+	
+//	console.log(serverKey);
+//	console.log(client_token);
+	
+		//console.log("flame check");
+	
+
+		//console.log(selectresult);
+		for( var i = 0; i< selectresult.length; i++)
+		{
+		var push_data = {
+			to : selectresult[i].token,
+			     notification:
+			     {
+				title:"Alert flame",
+				      body:"Flame detected, check your HomeCCTV applicaiton",
+				      sound:"default",
+				      click_action: "FCM_PLUGIN_ACTIVITY",
+				      icon:"fcm_push_icon"
+			     },
+
+				priority:"high",
+				restricted_package_name: "com.example.jeongwoojin.homecctv"
+		};
+		fcm.send(push_data, function(err,response){
+				
+				if(err)
+				{
+				console.error("Push is failed");
+				console.error(err);
+				return ;
+				}
+				
+				//console.log('Push메시지가 발송되었습니다.');
+				//console.log(response);
+
+				});
+		}
+
+
+	}	
+	if( sensordata[0] < 18)
+	{
+		for(var i = 0; i < selectresult.length; i++)
+		{
+		var undertem = 
+		{
+		to : selectresult[i].token,
+		notification:
+		{
+			title: "Your Homes temperature is under moderate",
+			body : "check your Home",
+			sound:"default",
+			click_action: "FCM_PLUGIN_ACTIVITY",
+			icon:"fcm_push_icon"
+		},
+
+		priority : "high",
+		restricted_package_name : "com.example.jeongwoojin.homecctv"
+		};
+		
+		fcm.send(undertem,function(err,response)
+				{
+				if(err)
+				{
+				console.error("Push is failed");
+				console.error(err);
+				return ;
+				}
+
+				});
+
+		}
+	}
+
+/*
 	var insert = connection.query('insert into sensordata set ?',temp,function(error,results,fields)
 			{
 				if(error) 
@@ -135,6 +231,6 @@ function test(data)
 			
 			});
 	
-*/
+*/			
 	
 }
