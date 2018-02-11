@@ -11,6 +11,11 @@ SW
 - PHP
 - Mysql
 
+
+------------------------------------------
+[[시연 영상]](https://www.youtube.com/watch?v=d5j8SYz9WGk&feature=youtu.be)
+
+
 ------------------------------------------
 - KOREATECH
 - Computer Science Engineering
