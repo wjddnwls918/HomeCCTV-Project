@@ -8,7 +8,7 @@ var Gpio = require('onoff').Gpio,
 	left = new Gpio(17,'out'),
 	right = new Gpio(18,'out');
 var FCM = require('fcm-node');
-var serverKey = 'AAAAaOt1N-E:APA91bFV9x7DXgdjY5eqlMR29Jxjm0h8fQ0MQPDhsSAwjxKzVYOs8Yjk7D2iyBCFlrD_G5Z-eeS-rxYtF3oKIX5kxl4TR2x6mGOVqa_Hm_77Rp3PGNgvlOfnWeEOIu9oTpWvSTki1wPa';
+var serverKey = 'AAAA4zwU8XY:APA91bEaajwQnpEuv09nd_Fr2tf8lnk48FXpD4aSaX6J_iUV1iX20Ui8wj2xpjhnS4lx5LyOGoYAMCqHStQy_7JgzVGYI1OvIF7EFcuMugPEmx9Qs2lLtXpiREDK34sZCG38NKczCyAQ';
 //var client_token ='c-EhHKZ3eq0:APA91bGBOkB62jj2FJi2zjB5bdvn5Efs_fOGrU2UGpngLktmffwcCTHDaGvmZ8bfsjwANvwSeOqSFGMmHoQLtFpv42AvO_3QynDBn3ieVzB6NTfVamlV3GPBkaRb3xB7GNBgkqQXX6Lz';
 
 
@@ -22,8 +22,8 @@ var mysql = require('mysql');
 var connection = mysql.createConnection(
 		{
 host : 'localhost',
-user : '#',
-password :'#',
+user : 'wangtou',
+password :'fkaus918',
 database : 'test'
 });
 
@@ -106,20 +106,27 @@ parser.on('data', test);
 
 var temp;
 var selectresult = "";
+var hstateresult = "";
+var sensordata ;
 
 function test(data)
 {
 //	console.log(data);
 
 	var select = connection.query('select * from fcm',function(error,results){
-			if(error)
-			console.log(error);
+			if(error){
+			console.error(error);
+			}
 
-			//console.log(results);
 			selectresult = results;
+//			console.log(selectresult[0].token);
+
 			});
 
-	var sensordata = String(data).split(',');
+
+
+	sensordata = String(data).split(',');
+
 	/*
 	for( var i =0; i<sensordata.length; i++)
 	{
@@ -137,20 +144,14 @@ function test(data)
 		    inputtime : time
 			   };
 
-	// data input 
 
+	//check flame
 	if(sensordata[3] == 0)
 	{
-	
-//	console.log(serverKey);
-//	console.log(client_token);
-	
-		//console.log("flame check");
-	
-
-		//console.log(selectresult);
+		
 		for( var i = 0; i< selectresult.length; i++)
 		{
+	//	console.log(selectresult[i].token);
 		var push_data = {
 			to : selectresult[i].token,
 			     notification:
@@ -163,15 +164,14 @@ function test(data)
 			     },
 
 				priority:"high",
-				restricted_package_name: "com.example.jeongwoojin.homecctv"
+				restricted_package_name: "cobong.jeongwoojin.homecctv.myhomecctv"
 		};
 		fcm.send(push_data, function(err,response){
 				
 				if(err)
 				{
 				console.error("Push is failed");
-				console.error(err);
-				return ;
+			console.error(err);
 				}
 				
 				//console.log('Push메시지가 발송되었습니다.');
@@ -181,8 +181,10 @@ function test(data)
 		}
 
 
-	}	
-	if( sensordata[0] < 18)
+	}
+
+	//under moderate tem
+	if( sensordata[0] < 10)
 	{
 		for(var i = 0; i < selectresult.length; i++)
 		{
@@ -199,7 +201,7 @@ function test(data)
 		},
 
 		priority : "high",
-		restricted_package_name : "com.example.jeongwoojin.homecctv"
+		restricted_package_name : "cobong.jeongwoojin.homecctv.myhomecctv"
 		};
 		
 		fcm.send(undertem,function(err,response)
@@ -208,7 +210,6 @@ function test(data)
 				{
 				console.error("Push is failed");
 				console.error(err);
-				return ;
 				}
 
 				});
@@ -216,21 +217,59 @@ function test(data)
 		}
 	}
 
-/*
+// humdetect
+	var hstateselect = connection.query('select * from hdetect order by idx desc',function(error,results)
+			{
+				if(error)
+				{
+				console.error(error);
+				}
+				else{
+				hstateresult = results;
+				//console.log(hstateresult[0].hstate);
+				//console.log(sensordata[4]);
+
+	if(sensordata[4] == 1 && hstateresult[0].hstate == 1)
+	{
+		for( var i = 0; i < selectresult.length; i++)
+		{
+		var halarm = {
+			to : selectresult[i].token,
+			     notification:
+				{
+				title:"human detected"
+				,body:"human detected, check your CCTV",
+				sound:"default",
+				click_action:"FCM_PLUGIN_ACTIVITY",
+				icon:"fcm_push_icon"
+				},
+				priority:"high",
+				restricted_package_name: "cobong.jeongwoojin.homecctv.myhomecctv"
+
+		};
+		fcm.send(halarm, function(err,response)
+			{
+				if(err)
+				{
+				console.error("Push is failed");
+				console.error(err);
+				}
+			});
+		}
+	}
+				}
+
+			});
+
+//data input 
+
 	var insert = connection.query('insert into sensordata set ?',temp,function(error,results,fields)
 			{
-				if(error) 
-				{
-					console.log(error.code);
-					console.log(error.fatal);
-				}
-				//console.log("insert completed!, row num :" +					results.insertId);
-				
-				
-			//connection.end();
+			if(error)
+			{
+
+			}
+			}); //end of insert
 			
-			});
 	
-*/			
-	
-}
+}//end of file
