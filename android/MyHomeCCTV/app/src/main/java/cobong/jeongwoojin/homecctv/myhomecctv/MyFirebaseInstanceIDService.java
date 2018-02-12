@@ -48,7 +48,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService
         public void run() {
 
             token = FirebaseInstanceId.getInstance().getToken();
-            Log.d(TAG,"Refreshed token "+ token);
+            Log.d(TAG,"check my token "+ token);
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = "http://192.168.219.136/tokeninsert.php";

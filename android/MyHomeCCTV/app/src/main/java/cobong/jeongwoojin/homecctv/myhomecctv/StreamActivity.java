@@ -389,29 +389,32 @@ public class StreamActivity extends AppCompatActivity {
 
             if(flameState.equals("0") &&  !fireflag )
             {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(StreamActivity.this);
-                dialog.setTitle("경고!");
-                dialog.setMessage("불꽃이 감지되었습니다.");
-                firedetector.setImageResource(R.drawable.fire);
-                fireflag = true;
+
+                if(!StreamActivity.this.isFinishing()) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(StreamActivity.this);
+                    dialog.setTitle("경고!");
+                    dialog.setMessage("불꽃이 감지되었습니다.");
+                    firedetector.setImageResource(R.drawable.fire);
+                    fireflag = true;
 
 
+                    dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //end of dialog
+                        }
+                    });
 
-                dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //end of dialog
-                    }
-                });
+                    dialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
 
-                dialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
 
-                dialog.show();
+                    dialog.show();
+                }
             }
             else if(flameState.equals("1"))
             {
