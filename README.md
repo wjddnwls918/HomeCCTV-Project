@@ -2,17 +2,32 @@
 
 HW 
 - 라즈베리파이
+- 라즈베리파이 카메라
 - 아두이노
+- 서보모터
 - 센서들 (DHT22, MQ135, 인체감지, 불꽃감지)
 
 SW
 - 안드로이드
 - Node.js
+- Nginx
 - PHP
 - Mysql
+------------------------------------------
 
+## 테이블구성
+
+![table1](./table1.PNG)
+![table2](./table2.PNG)
 
 ------------------------------------------
+
+## 프로젝트 구성
+
+![project_map](./project_map.PNG)
+
+------------------------------------------
+
 [[시연 영상]](https://www.youtube.com/watch?v=d5j8SYz9WGk&feature=youtu.be)
 
 
