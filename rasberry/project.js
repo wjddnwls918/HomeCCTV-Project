@@ -8,9 +8,7 @@ var Gpio = require('onoff').Gpio,
 	left = new Gpio(17,'out'),
 	right = new Gpio(18,'out');
 var FCM = require('fcm-node');
-var serverKey = 'AAAA4zwU8XY:APA91bEaajwQnpEuv09nd_Fr2tf8lnk48FXpD4aSaX6J_iUV1iX20Ui8wj2xpjhnS4lx5LyOGoYAMCqHStQy_7JgzVGYI1OvIF7EFcuMugPEmx9Qs2lLtXpiREDK34sZCG38NKczCyAQ';
-//var client_token ='c-EhHKZ3eq0:APA91bGBOkB62jj2FJi2zjB5bdvn5Efs_fOGrU2UGpngLktmffwcCTHDaGvmZ8bfsjwANvwSeOqSFGMmHoQLtFpv42AvO_3QynDBn3ieVzB6NTfVamlV3GPBkaRb3xB7GNBgkqQXX6Lz';
-
+var serverKey = '#';
 
 var fcm = new FCM(serverKey);
 
@@ -22,8 +20,8 @@ var mysql = require('mysql');
 var connection = mysql.createConnection(
 		{
 host : 'localhost',
-user : 'wangtou',
-password :'fkaus918',
+user : '#',
+password :'#',
 database : 'test'
 });
 
