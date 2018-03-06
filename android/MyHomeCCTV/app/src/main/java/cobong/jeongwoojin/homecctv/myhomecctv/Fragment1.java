@@ -246,6 +246,7 @@ public class Fragment1 extends Fragment implements AbsListView.OnScrollListener 
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
         String url = "http://192.168.219.136/DayResult.php";
+        //String url = "http://49.161.122.232:8888/DayResult.php";
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 //요청 성공시
@@ -275,8 +276,13 @@ public class Fragment1 extends Fragment implements AbsListView.OnScrollListener 
                                 break;
                             }
 
-                            list.add(getinputtime[(page * OFFSET) + i]);
-                            list2.add( Integer.toString(( page*OFFSET ) + i+1) );
+                            if( ((page*OFFSET) + i) > list_cnt)
+                                break;
+                            else {
+
+                                list.add(getinputtime[(page * OFFSET) + i]);
+                                list2.add(Integer.toString((page * OFFSET) + i + 1));
+                            }
                         }
                     }
                 },

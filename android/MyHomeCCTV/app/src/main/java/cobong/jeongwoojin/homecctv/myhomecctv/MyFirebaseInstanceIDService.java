@@ -52,6 +52,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService
 
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = "http://192.168.219.136/tokeninsert.php";
+            //String url = "http://49.161.122.232:8888/tokeninsert.php";
 
             StringRequest request = new StringRequest(Request.Method.POST, url,
                     //요청 성공시

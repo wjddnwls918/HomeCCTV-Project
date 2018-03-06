@@ -215,6 +215,7 @@ public class DayGraph extends Fragment {
             super.run();
             RequestQueue queue = Volley.newRequestQueue(getContext());
             String url = "http://192.168.219.136/Avgdata.php";
+            //String url = "http://49.161.122.232:8888/Avgdata.php";
 
             StringRequest request = new StringRequest(Request.Method.POST, url,
                     //요청 성공시

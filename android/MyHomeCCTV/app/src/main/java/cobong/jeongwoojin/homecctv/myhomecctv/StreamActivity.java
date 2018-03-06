@@ -224,6 +224,7 @@ public class StreamActivity extends AppCompatActivity {
     {
         try{
             socket = IO.socket("http://192.168.219.136:3000");
+            //socket = IO.socket("http://49.161.122.232:3000");
 
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
@@ -260,6 +261,8 @@ public class StreamActivity extends AppCompatActivity {
         {
 
             String uri = "rtsp://192.168.219.136:8555/unicast";
+            //String uri = "rtsp://49.161.122.232:8555/unicast";
+
             v.setVideoURI( Uri.parse(uri) );
             //v.setMediaController(new MediaController(getApplicationContext()));
             v.requestFocus();
@@ -316,6 +319,8 @@ public class StreamActivity extends AppCompatActivity {
             while(true) {
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 String url = "http://192.168.219.136/Realtime.php";
+                //String url = "http://49.161.122.232:8888/Realtime.php";
+
 
                 StringRequest request = new StringRequest(Request.Method.POST, url,
                         //요청 성공시
@@ -439,6 +444,7 @@ public class StreamActivity extends AppCompatActivity {
             super.run();
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = "http://192.168.219.136/hstateinsert.php";
+            //String url = "http://49.161.122.232:8888/hstateinsert.php";
 
             StringRequest request = new StringRequest(Request.Method.POST, url,
                     //요청 성공시

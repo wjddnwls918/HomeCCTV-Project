@@ -16,6 +16,8 @@ public class LoginRequest extends StringRequest {
 
     //라즈베리 주소할당
     final static private String URL = "http://192.168.219.136/Login.php";
+    //final static private String URL = "http://49.161.122.232:8888/Login.php";
+
     private Map<String,String> parameters;
 
 
